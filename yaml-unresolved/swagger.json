@@ -1,0 +1,290 @@
+swagger: '2.0'
+info:
+  description: An API for managing versions of Supply Chain Definitions.
+  version: 1.0.0
+  title: Definitions Management Administration API
+  # put the contact info for your development or API team
+  contact:
+    email: mason.yarrick@bhp.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /versions/{number}:
+    get:
+      tags:
+      - developers
+      summary: gets spec versions with specific numbers.
+      operationId: getSpecificationVersion
+      description: >
+        Gets specification versions with particularIDs.
+      produces: 
+      - application/json
+      parameters: 
+      - in: path
+        name: number
+        description: Specification version number.
+        type: number
+        required: true
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SpecificationVersion'
+        404:
+          description: Not found
+  /versions/{number}/publish:
+    post:
+      tags:
+      - admins
+      summary: publishes a version of a spec.
+      operationId: publishSpecificationVersion
+      description: >
+        Publishes a specification of a particular version.
+      produces: 
+      - application/json
+      consumes:
+      - application/json
+      parameters: 
+      - in: path
+        name: number
+        description: Specification version number.
+        type: number
+        required: true
+      - in: body
+        name: comments
+        description: Comments to attach to the publication.
+        schema:
+          type: string
+      responses:
+        201:
+          description: Published
+        404:
+          description: Not found
+        401:
+          description: Bad input parameter
+  /versions/{number}/undo:
+    post:
+      tags:
+      - admins
+      summary: undo an unpublished version of a spec.
+      operationId: undoSpecificationVersion
+      description: >
+        Undo a specification of a particular version.
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: number
+        description: Specification version number.
+        type: number
+        required: true
+      responses:
+        201:
+          description: Undone
+        404:
+          description: Not found
+        401:
+          description: Bad input parameter
+  /versions:
+    get:
+      tags:
+      - developers
+      summary: gets versions depending on their status.
+      operationId: findSpecificationVersion
+      description: >
+        Gets specification versions depending on their properties.
+      produces:
+      - application/json
+      parameters: 
+      - in: query
+        name: published
+        required: false
+        type: boolean
+        description: Whether the versions have been published or not
+      - in: query
+        name: createdBefore
+        type: string
+        description: The maximum creation date to search for
+        required: false
+      - in: query
+        name: createdAfter
+        type: string
+        description: The minimum creation date to search for
+        required: false
+      - in: query
+        name: publishedBefore
+        type: string
+        description: The maximum publication date to search for
+        required: false
+      - in: query
+        name: publishedAfter
+        type: string
+        description: The minimum publication date to search for
+        required: false
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SpecificationVersion'
+        404:
+          description: Not found
+definitions:
+  SpecificationVersion:
+    type: object
+    required:
+      - sequenceNumber
+      - creationTimestamp
+    properties:
+      sequenceNumber:
+        type: number
+        example: 1
+      published:
+        type: boolean
+        example: false
+      creationTimestamp:
+        type: string
+        example: '201808281000'
+      publicationTimestamp:
+        type: string
+        example: '201808181100'
+      comments:
+        type: string
+        example: 'Description of change set'
+      changeSet:
+        type: object
+        properties:
+          equipmentClasses:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          equipment:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          materialClasses:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          materialDefinitions:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          materialLots:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          workflowSpecificationNodeTypes:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          workflowSpecificationConnectionTypes:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+          workMasters:
+            type: object
+            properties:
+              added:
+                type: array
+                items:
+                  type: string
+              updated:
+                type: array
+                items:
+                  type: string
+              removed:
+                type: array
+                items:
+                  type: string
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BHP7/DefinitionsManagement_Administration/1.0.0
+schemes:
+ - https
