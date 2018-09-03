@@ -1,0 +1,375 @@
+---
+swagger: "2.0"
+info:
+  description: An API for managing versions of Supply Chain Definitions.
+  version: 1.0.0
+  title: Definitions Management Administration API
+  contact:
+    email: mason.yarrick@bhp.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /BHP7/DefinitionsManagement_Administration/1.0.0
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+schemes:
+- https
+paths:
+  /versions/{number}:
+    get:
+      tags:
+      - developers
+      summary: gets spec versions with specific numbers.
+      description: |
+        Gets specification versions with particularIDs.
+      operationId: getSpecificationVersion
+      produces:
+      - application/json
+      parameters:
+      - name: number
+        in: path
+        description: Specification version number.
+        required: true
+        type: number
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SpecificationVersion'
+        404:
+          description: Not found
+  /versions/{number}/publish:
+    post:
+      tags:
+      - admins
+      summary: publishes a version of a spec.
+      description: |
+        Publishes a specification of a particular version.
+      operationId: publishSpecificationVersion
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: number
+        in: path
+        description: Specification version number.
+        required: true
+        type: number
+      - in: body
+        name: comments
+        description: Comments to attach to the publication.
+        required: false
+        schema:
+          type: string
+      responses:
+        201:
+          description: Published
+        404:
+          description: Not found
+        401:
+          description: Bad input parameter
+  /versions/{number}/undo:
+    post:
+      tags:
+      - admins
+      summary: undo an unpublished version of a spec.
+      description: |
+        Undo a specification of a particular version.
+      operationId: undoSpecificationVersion
+      produces:
+      - application/json
+      parameters:
+      - name: number
+        in: path
+        description: Specification version number.
+        required: true
+        type: number
+      responses:
+        201:
+          description: Undone
+        404:
+          description: Not found
+        401:
+          description: Bad input parameter
+  /versions:
+    get:
+      tags:
+      - developers
+      summary: gets versions depending on their status.
+      description: |
+        Gets specification versions depending on their properties.
+      operationId: findSpecificationVersion
+      produces:
+      - application/json
+      parameters:
+      - name: published
+        in: query
+        description: Whether the versions have been published or not
+        required: false
+        type: boolean
+      - name: createdBefore
+        in: query
+        description: The maximum creation date to search for
+        required: false
+        type: string
+      - name: createdAfter
+        in: query
+        description: The minimum creation date to search for
+        required: false
+        type: string
+      - name: publishedBefore
+        in: query
+        description: The maximum publication date to search for
+        required: false
+        type: string
+      - name: publishedAfter
+        in: query
+        description: The minimum publication date to search for
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SpecificationVersion'
+        404:
+          description: Not found
+definitions:
+  SpecificationVersion:
+    type: object
+    required:
+    - creationTimestamp
+    - sequenceNumber
+    properties:
+      sequenceNumber:
+        type: number
+        example: 1.0
+      published:
+        type: boolean
+        example: false
+      creationTimestamp:
+        type: string
+        example: "201808281000"
+      publicationTimestamp:
+        type: string
+        example: "201808181100"
+      comments:
+        type: string
+        example: Description of change set
+      changeSet:
+        $ref: '#/definitions/SpecificationVersion_changeSet'
+    example:
+      sequenceNumber: 1.0
+      comments: Description of change set
+      creationTimestamp: "201808281000"
+      published: false
+      publicationTimestamp: "201808181100"
+      changeSet:
+        workflowSpecificationNodeTypes:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        equipmentClasses:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        materialClasses:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        equipment:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        materialDefinitions:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        materialLots:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        workflowSpecificationConnectionTypes:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+        workMasters:
+          removed:
+          - removed
+          - removed
+          added:
+          - added
+          - added
+          updated:
+          - updated
+          - updated
+  SpecificationVersion_changeSet_equipmentClasses:
+    properties:
+      added:
+        type: array
+        items:
+          type: string
+      updated:
+        type: array
+        items:
+          type: string
+      removed:
+        type: array
+        items:
+          type: string
+    example:
+      removed:
+      - removed
+      - removed
+      added:
+      - added
+      - added
+      updated:
+      - updated
+      - updated
+  SpecificationVersion_changeSet:
+    properties:
+      equipmentClasses:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      equipment:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      materialClasses:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      materialDefinitions:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      materialLots:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      workflowSpecificationNodeTypes:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      workflowSpecificationConnectionTypes:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+      workMasters:
+        $ref: '#/definitions/SpecificationVersion_changeSet_equipmentClasses'
+    example:
+      workflowSpecificationNodeTypes:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      equipmentClasses:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      materialClasses:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      equipment:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      materialDefinitions:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      materialLots:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      workflowSpecificationConnectionTypes:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
+      workMasters:
+        removed:
+        - removed
+        - removed
+        added:
+        - added
+        - added
+        updated:
+        - updated
+        - updated
