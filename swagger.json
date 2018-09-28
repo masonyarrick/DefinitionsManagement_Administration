@@ -38,7 +38,7 @@
           "200" : {
             "description" : "Successful operation",
             "schema" : {
-              "$ref" : "#/definitions/SpecificationVersion"
+              "$ref" : "#/definitions/specificationVersion"
             }
           },
           "404" : {
@@ -151,7 +151,7 @@
           "200" : {
             "description" : "Successful operation",
             "schema" : {
-              "$ref" : "#/definitions/SpecificationVersion"
+              "$ref" : "#/definitions/specificationVersion"
             }
           },
           "404" : {
@@ -162,7 +162,7 @@
     }
   },
   "definitions" : {
-    "SpecificationVersion" : {
+    "specificationVersion" : {
       "type" : "object",
       "required" : [ "sequenceNumber", "creationTimestamp" ],
       "properties" : {
@@ -212,7 +212,53 @@
                 }
               }
             },
+            "equipmentClassProperties" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
             "equipment" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "equipmentProperties" : {
               "type" : "object",
               "properties" : {
                 "added" : {
@@ -304,6 +350,167 @@
                 }
               }
             },
+            "materialLotProperties" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "materialSubLots" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "materialSubLotProperties" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "personnelClasses" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "personnelClassProperties" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "person" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "personProperties" : {
+              "type" : "object",
+              "properties" : {
+                "added" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "updated" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "removed" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
             "workflowSpecificationNodeTypes" : {
               "type" : "object",
               "properties" : {
@@ -352,33 +559,34 @@
             },
             "workMasters" : {
               "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/properties"
             }
           }
+        }
+      }
+    },
+    "properties" : {
+      "created" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        }
+      },
+      "changed" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        }
+      },
+      "deleted" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
         }
       }
     }
   },
   "host" : "virtserver.swaggerhub.com",
-  "basePath" : "/BHP7/DefinitionsManagement_Administration/1.0.0",
-  "schemes" : [ "https" ]
+  "schemes" : [ "https" ],
+  "basePath" : "/BHP_TECH_SI/DefinitionsManagement_Administration/1.0.0"
 }
