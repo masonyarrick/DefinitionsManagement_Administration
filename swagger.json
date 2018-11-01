@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Product definition management shall be defined as the collection of activities that manage all of the Level 3 information about the product required for manufacturing, including the product production rules. Product definition information is shared between product production rules, bill of material and bill of resources. The product production rules contain the information used to instruct a manufacturing operation how to produce a product. This may be called a work master (ISA-95 Part 4), general, site, or master recipe (ANSI/ISA-88.00.01 and IEC 61512-1 definitions), standard operating procedure (SOP), standard operating conditions (SOC), routing, or assembly steps based on the production strategy used. The product definition information is made available to other Level 3 functions and to Level 2 functions as required. Product definition management includes management of the distribution of product production rules. Some of the product production rules may exist in Level 2 and Level 1 equipment. When that is the case, downloads of this information shall be coordinated with other manufacturing operations management functions to avoid affecting production. This information may be included as part of operational commands when the download is part of a production execution management activity.",
-    "version" : "1.0.0",
-    "title" : "Definitions Management Administration API",
+    "description" : "The DM Administration API uses the specificationVersion schema for publishing administrative messages for any changed data in the complete set of operations definition objects. DM Administration API provides the ability to create, change, or delete the an element, partial set or complete set of definitions for mine operations and its supply chain configuration.  The  specificationVersion specifies the changedSet object for all information which uses the property object to specify the action on each information object. The Post/version/publish message is published when any data object in the schema is created, changed and deleted. The Post/version/undo message is used to reverse a specified version or changed data set of any previous published versions. The DM Administraion API provides Developers the Get/version messages to query for specific specification versions.  The DM function services production and support operations by managing all Level 3 and some Level 2 information definition.The DM specifications are sent to and then applied by other Level 3 functions and Level 2 functions. DM Administration includes management of the distribution of DM specifications to systems across L2-L4. The primary work definition object is the work master which is the requirements for a work task.  Each work master (ISA-95 Part 4) has a defined scope to an equipment heirachy level as either general, site, work cell, unit or lower. Some of the product production rule sets as equipment and process production rule sets may exist in Level 2 controllers and devices. When that is the case, exchanges of this L2 information shall be coordinated with production execution management and data collection management activities DM information is used by production execution management function to provide operational commands to L2 equipment controllers and devices; the operational commands provides as the workflow specification is executed per the job order.      The specificationVersion include message metadata elements as sequenceNumber, creationTimestamp, published, publicationTimestamp, comments, and changeSet. The changeSet object may contain the following objects of equipmentClasses, equipmentClassProperties, equipment, equipmentProperties, materialClasses, materialClassProperties, materialDefinitions, materialDefinitionProperties, materialLots, materialLotProperties; materialSublots; materialSublotProperties, personnelClasses, personnelClassProperties, persons, personProperties, testSpecifications; testSpecificationProperties; testSpecificationCriteria, evaluatedProperties; workMasters, workflowSpecifications, workflowSpecificationProperties, workflowSpecificationNode, workflowSpecificationNodeProperties, workflowSpecificationNodeTypes, workflowSpecificationNodeTypesProperties, workflowSpecificationConnections, workflowSpecificationConnectionProperties, workflowSpecificationConnectionTypes, workflowSpecificationConnectionTypeProperties, equipmentSpecifications, equipmentSpecificationProperties, materialSpecifications, materialSpecificationProperties, personnelSpecifications, personnelSpecificationProperties, parameterSpecifications, workRecordSpecifications, workRecordTemplates, workRecordEntryTemplates, workAlertDefinitions, workAlertDefinitionProperties, workAlertTemplates, and workAlertTemplateProperties.",
+    "version" : "1.1.0",
+    "title" : "Definition Management Administration API",
     "contact" : {
       "email" : "mason.yarrick@bhp.com"
     },
@@ -20,18 +20,18 @@
     "description" : "Operations available to regular developers"
   } ],
   "paths" : {
-    "/versions/{number}" : {
+    "/version/{number}" : {
       "get" : {
         "tags" : [ "developers" ],
         "summary" : "gets spec versions with specific numbers.",
         "operationId" : "getSpecificationVersion",
-        "description" : "Gets specification versions with particularIDs.\n",
+        "description" : "Gets specification versions with particular IDs.\n",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "path",
           "name" : "number",
-          "description" : "Specification version number.",
-          "type" : "number",
+          "description" : "Version number for various work specifications.",
+          "type" : "string",
           "required" : true
         } ],
         "responses" : {
@@ -47,19 +47,19 @@
         }
       }
     },
-    "/versions/{number}/publish" : {
+    "/version/{number}/publish" : {
       "post" : {
         "tags" : [ "admins" ],
-        "summary" : "publishes a version of a spec.",
+        "summary" : "publishes a version of a work specfication.",
         "operationId" : "publishSpecificationVersion",
-        "description" : "Publishes a specification of a particular version.\n",
+        "description" : "Publishes a work specification of a particular version.\n",
         "produces" : [ "application/json" ],
         "consumes" : [ "application/json" ],
         "parameters" : [ {
           "in" : "path",
           "name" : "number",
           "description" : "Specification version number.",
-          "type" : "number",
+          "type" : "string",
           "required" : true
         }, {
           "in" : "body",
@@ -82,18 +82,18 @@
         }
       }
     },
-    "/versions/{number}/undo" : {
+    "/version/{number}/undo" : {
       "post" : {
         "tags" : [ "admins" ],
-        "summary" : "undo an unpublished version of a spec.",
+        "summary" : "undo an unpublished version of a work specification.",
         "operationId" : "undoSpecificationVersion",
-        "description" : "Undo a specification of a particular version.\n",
+        "description" : "Undo a work specification of a particular version.\n",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "path",
           "name" : "number",
           "description" : "Specification version number.",
-          "type" : "number",
+          "type" : "string",
           "required" : true
         } ],
         "responses" : {
@@ -109,12 +109,12 @@
         }
       }
     },
-    "/versions" : {
+    "/version" : {
       "get" : {
         "tags" : [ "developers" ],
         "summary" : "gets versions depending on their status.",
         "operationId" : "findSpecificationVersion",
-        "description" : "Gets specification versions depending on their properties.\n",
+        "description" : "Gets work specification versions depending on their properties.\n",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
@@ -167,7 +167,7 @@
       "required" : [ "sequenceNumber", "creationTimestamp" ],
       "properties" : {
         "sequenceNumber" : {
-          "type" : "number",
+          "type" : "string",
           "example" : 1
         },
         "published" : {
@@ -176,11 +176,11 @@
         },
         "creationTimestamp" : {
           "type" : "string",
-          "example" : "201808281000"
+          "example" : "ISO 8601: yyyy-mm-ddThh:mm:ss for local time as 2002-09-22T09:15:23"
         },
         "publicationTimestamp" : {
           "type" : "string",
-          "example" : "201808181100"
+          "example" : "ISO 8601: yyyy-mm-ddThh:mm:ss for local time as 2002-09-22T09:15:23"
         },
         "comments" : {
           "type" : "string",
@@ -190,398 +190,164 @@
           "type" : "object",
           "properties" : {
             "equipmentClasses" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "equipmentClassProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "equipment" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "equipmentProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "materialClasses" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
+            },
+            "materialClassProperties" : {
+              "$ref" : "#/definitions/property"
             },
             "materialDefinitions" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
+            },
+            "materialDefinitionProperties" : {
+              "$ref" : "#/definitions/property"
             },
             "materialLots" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "materialLotProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
-            "materialSubLots" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+            "materialSublots" : {
+              "$ref" : "#/definitions/property"
             },
-            "materialSubLotProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+            "materialSublotProperties" : {
+              "$ref" : "#/definitions/property"
             },
             "personnelClasses" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
             "personnelClassProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
-            "person" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+            "persons" : {
+              "$ref" : "#/definitions/property"
             },
             "personProperties" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+              "$ref" : "#/definitions/property"
             },
-            "workflowSpecificationNodeTypes" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+            "testSpecifications" : {
+              "$ref" : "#/definitions/property"
             },
-            "workflowSpecificationConnectionTypes" : {
-              "type" : "object",
-              "properties" : {
-                "added" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "updated" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                },
-                "removed" : {
-                  "type" : "array",
-                  "items" : {
-                    "type" : "string"
-                  }
-                }
-              }
+            "testSpecificationProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "testSpecificationCriteria" : {
+              "$ref" : "#/definitions/property"
+            },
+            "evaluatedProperties" : {
+              "$ref" : "#/definitions/property"
             },
             "workMasters" : {
-              "type" : "object",
-              "$ref" : "#/definitions/properties"
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationNode" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationNodeProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationNodeTypes" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationNodeTypesProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationConnections" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationConnectionProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationConnectionTypes" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workflowSpecificationConnectionTypeProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "equipmentSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "equipmentSpecificationProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "materialSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "materialSpecificationProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "personnelSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "personnelSpecificationProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "parameterSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workRecordSpecifications" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workRecordTemplates" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workRecordEntryTemplates" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workAlertDefinitions" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workAlertDefinitionProperties" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workAlertTemplates" : {
+              "$ref" : "#/definitions/property"
+            },
+            "workAlertTemplateProperties" : {
+              "$ref" : "#/definitions/property"
             }
           }
         }
       }
     },
-    "properties" : {
-      "created" : {
-        "type" : "array",
-        "items" : {
-          "type" : "string"
-        }
-      },
-      "changed" : {
-        "type" : "array",
-        "items" : {
-          "type" : "string"
-        }
-      },
-      "deleted" : {
-        "type" : "array",
-        "items" : {
-          "type" : "string"
+    "property" : {
+      "type" : "object",
+      "properties" : {
+        "created" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "changed" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "deleted" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
         }
       }
     }
